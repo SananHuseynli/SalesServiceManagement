@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: order_product-pivot-relation
+      author: ShLF
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order_product
+            baseColumnNames: order_id
+            constraintName: fk_order_product_orders
+            referencedTableName: order
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: order_product
+            baseColumnNames: product_id
+            constraintName: fk_order_product_product
+            referencedTableName: product
+            referencedColumnNames: id

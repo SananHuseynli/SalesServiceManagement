@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: history-order-relation
+      author: ShLF
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: history
+            baseColumnNames: order_id
+            constraintName: fk_history_orders
+            referencedTableName: order
+            referencedColumnNames: id

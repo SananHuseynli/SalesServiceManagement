@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: order-customer-relation
+      author: ShLF
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order
+            baseColumnNames: customer_id
+            constraintName: fk_orders_customer
+            referencedTableName: customer
+            referencedColumnNames: id

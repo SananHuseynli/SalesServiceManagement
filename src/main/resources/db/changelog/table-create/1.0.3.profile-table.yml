@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tables-profile
+      author: ShLF
+      changes:
+        - createTable:
+            tableName: profile
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date_of_birth
+                  type: DATE
+              - column:
+                  name: gender
+                  type: VARCHAR(20)
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: full_address
+                  type: TEXT
+              - column:
+                  name: zip_code
+                  type: VARCHAR(20)
+              - column:
+                  name: pin
+                  type: VARCHAR(10)
+                  constraints:
+                    unique: true
+              - column:
+                  name: passport
+                  type: VARCHAR(20)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP

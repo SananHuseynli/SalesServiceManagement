@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: customer-profile-relation
+      author: ShLF
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: customer
+            baseColumnNames: profile_id
+            constraintName: fk_customer_profile
+            referencedTableName: profile
+            referencedColumnNames: id

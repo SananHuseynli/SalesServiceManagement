@@ -1,0 +1,59 @@
+
+services:
+  postgres-db:
+    image: postgres:17
+    container_name: sales_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sale_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - back-end-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: sales_redis
+    restart: always
+    ports:
+      - "6380:6379"
+    networks:
+      - back-end-network
+
+  app:
+#    image: sales-ms34:1.0
+    image: salesmanagementsystem:1.0
+#    build:
+#      dockerfile: Dockerfile
+    depends_on:
+      - postgres-db
+      - redis
+    ports:
+      - "8888:9191"
+    environment:
+      DB_HOST: postgres-db
+      DB_PORT: "5432"
+      DB_NAME: sale_db
+      DB_USER: user
+      DB_PASSWORD: password
+      SERVER_PORT: "9191"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    networks:
+      - back-end-network
+
+
+volumes:
+  postgres_data:
+
+networks:
+  back-end-network:
+    driver: bridge
+
+
+# docker tag sales:1.0 senanhuseynlee/sales:1.0
+# docker push senanhuseynlee/sales:1.0

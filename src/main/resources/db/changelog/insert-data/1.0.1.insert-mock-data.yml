@@ -1,0 +1,265 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-random-mock-data-1.0.1
+      author: ShLF
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: false
+            sql: |
+              DO $$
+              DECLARE
+                  -- Cinsə görə ayrılmış ad və soyad hovuzları
+                  v_male_names TEXT[] := ARRAY['Anar', 'Elvin', 'Fərid', 'Şamxal', 'Tural', 'Murad', 'Orxan', 'Rəşad', 'Elnur', 'Samir', 'Emin', 'Vüsal', 'Kamran', 'İlkin', 'Zaur', 'Ramil', 'Məmməd', 'Əli', 'Ayxan', 'Elçin', 'Toğrul', 'Rauf', 'Cavid', 'Ümid', 'Sənan', 'Yalçın', 'Fuad', 'Elşən', 'Rüstəm', 'Asif', 'Vasif', 'Aqil', 'Nicat', 'Kamal', 'Kənan', 'Rövşən', 'Nurlan', 'Aydın', 'Ceyhun', 'Rizvan', 'Namiq', 'Eldar', 'Həsən'];
+                  v_female_names TEXT[] := ARRAY['Leyla', 'Nigar', 'Aysel', 'Günay', 'Könül', 'Səbinə', 'Arzu', 'Nərmin', 'Zeynəb', 'Məryəm', 'Xədicə', 'Esmira', 'Aytac', 'Fidan', 'Lalə', 'Nəzrin', 'Səmra', 'Dəniz', 'Zəhra', 'Rəna', 'Ayan', 'Ləman', 'Gülər', 'Pərvanə', 'Afaq', 'Nisə', 'Şəfəq', 'Sevda', 'Reyhan'];
+                  v_surnames_ov_ev TEXT[] := ARRAY['Əliyev', 'Məmmədov', 'Hüseynov', 'İsmayılov', 'Fərzəliyev', 'Əkbərov', 'Bağırov', 'Rzayev', 'Həsənov', 'Qasımov', 'Süleymanov', 'Kərimov', 'Mehdiyev', 'Sultanov', 'Paşayev', 'Vəliyev', 'Quliyev', 'Mahmudov', 'Abbasov', 'Əhmədov', 'Muradov', 'Musayev', 'İbrahimov', 'Xəlilov', 'Mustafayev', 'Babayev', 'Cəfərov', 'Əsgərov', 'Nəsirov', 'Tahirov', 'Səfərov', 'Mənsurov', 'Şərifov', 'Nağıyev', 'Səmədov', 'Nəbiyev', 'Qorçuyev'];
+                  v_surnames_neutral TEXT[] := ARRAY['Əlizadə', 'Məmmədzadə', 'Həsənzadə', 'Qasımzadə', 'Muradlı', 'Bağırlı', 'Aydınlı', 'Yusifli', 'Cavadlı', 'Əhmədli'];
+
+                  v_cities TEXT[] := ARRAY['Bakı', 'Sumqayıt', 'Gəncə', 'Xırdalan', 'Mingəçevir', 'Naxçıvan', 'Lənkəran', 'Şəki', 'Quba', 'Qəbələ', 'Göyçay', 'Şamaxı'];
+                  v_categories TEXT[] := ARRAY['Elektronika', 'Məişət Texnikası', 'Geyim və Dəb', 'Ayaqqabılar', 'Kitablar', 'Kosmetika və Baxım', 'İdman Malları', 'Avto Aksesuarlar', 'Ofis və Dəftərxona', 'Uşaq Aləmi', 'Ev və Bağça', 'Pet Şop', 'Musiqi Alətləri', 'Qida və Erzaq', 'Hədiyyəlik Əşyalar'];
+
+                  -- HƏR KATEQORİYA ÜÇÜN 13 ƏDƏD TAM REAL MƏHSUL ADLARI HOVUZU
+                  v_e1 TEXT[] := ARRAY['iPhone 15 Pro Max', 'Galaxy S24 Ultra', 'MacBook Air M3', 'Sony WH-1000XM5', 'iPad Air 5 64GB', 'Asus ROG Strix G16', 'AirPods Pro 2', 'Xiaomi Redmi Note 13', 'Logitech MX Master 3S', 'Anker PowerBank 20k', 'Dell UltraSharp 27', 'HP LaserJet Pro M15a', 'Lenovo ThinkPad X1'];
+                  v_e2 TEXT[] := ARRAY['Bosch NoFrost Soyuducu', 'Philips Kofe Aparatı', 'Tefal Express Ütü', 'LG EcoBubble Paltaryuyan', 'Samsung Qabyuyan Maşın', 'Xiaomi Robot Tozsoran S10', 'DeLonghi Ekmek Tosteri', 'Kenwood MultiBlender Set', 'Braun Silk-epil Epilyator', 'Dyson Supersonic Fen', 'Panasonic Mikrodalğalı Soba', 'Gorenje Elektrikli Çaydan', 'Arnisa Şirəçəkən'];
+                  v_e3 TEXT[] := ARRAY['Zara Pambıq Köynək', 'H&M Slim-Fit Cins Şalvar', 'Mango Elegant Ziyafət Donu', 'Pull&Bear Yun Jaket', 'Nike Kapüşonlu Hudi', 'Adidas İdman Şalvarı', 'Koton Qrafik T-Shirt', 'LC Waikiki Payız Paltosu', 'Massimo Dutti Dəri Gödəkçə', 'Stradivarius Bel Şortu', 'Bershka Gündəlik Kombin', 'Colin''s Cins Kurtka', 'Mavi Klassik Köynək'];
+                  v_e4 TEXT[] := ARRAY['Nike Air Force 1 Low', 'Adidas Stan Smith White', 'Puma Classic Suede Black', 'New Balance 574 Grey', 'Reebok Club C 85', 'Timberland Su-Keçirməyən', 'Ecco Klassik Dəri Tufli', 'Skechers Gəzinti Ayaqqabısı', 'Converse All Star High', 'Vans Old Skool Skeyt', 'Columbia Dağ Çəkməsi', 'Salamander Komfort Lofer', 'Zara Zamş Mokasin'];
+                  v_e5 TEXT[] := ARRAY['1984 - George Orwell', 'Səfillər - Victor Hugo', 'Hərb və Sülh - Lev Tolstoy', 'Cinayət və Cəza - Dostoyevski', 'Martin Eden - Jack London', 'Sapiens - Y.N.Harari', 'Atom Vərdişləri - J.Clear', 'Zəngin Ata Yoxsul Ata', 'Dorian Qreyin Portreti', 'Xosrov və Şirin - N.Gəncəvi', 'Əli və Nino - Qurban Səid', 'Düşün və Zəngin Ol', 'Şerlok Holms - Külliyyat'];
+                  v_e6 TEXT[] := ARRAY['Estee Lauder Night Serum', 'L''Oreal Lash Paradise Tuş', 'Mac Matte Dodaq Boyası', 'Bioderma Sensibio Miselyar', 'CeraVe Nəmləndirici Krem', 'Shiseido Günəş Kremi SPF50', 'Nivea Men Cool Deodorant', 'Maybelline Fit Me Konsiler', 'Gillette Mach3 Təraş Geli', 'Pantene Pro-V Şampun 400ml', 'La Roche-Posay Effaclar Gel', 'The Ordinary Niacinamide', 'Vichy Mineral 89 Serum'];
+                  v_e7 TEXT[] := ARRAY['Yoqa Matı Ekoloji 6mm', 'Dumbbell Dəsti 2x5kq', 'Nike Pitch Futbol Topu', 'Puma Pro İdman Çantası', 'Scott Velosiped Kaskı', 'Speedo Üzgüçülük Eynəyi', 'Adidas Fitnes Əlcəyi', 'Müqavimət Rezinləri Dəsti', 'Stanley Termos 1L Black', 'Decathlon Qaçış Kəməri', 'Fitbit Charge 6 Smart', 'Wilson Tennis Raketi', 'Sürət Atlama İpi'];
+                  v_e8 TEXT[] := ARRAY['70mai Videoqeydiyyatçı 4K', 'Baseus Maqnit Telefon Tutucu', 'Avto Tozsoran High-Power', 'Michelin Rəqəmsal Nasos', 'Areon Salon Ətri Yemiş', 'Ortopedik Otacaq Belliyi', 'Meguiar''s Avto Şampun 1L', 'Philips LED H7 Lampası', 'Alətlər Dəsti 82 Parça', 'Antifriz Concentrated 5L', 'Şüşətəmizləyən Maye Qışlıq', 'Baseus Avto İnverter 150W', 'Sonax Dəri Otacaq Mayesi'];
+                  v_e9 TEXT[] := ARRAY['Parker Sonnet Gümüşü Qələm', 'Moleskine Klassik Gündəlik', 'Deli Metal Tikən Stepler', 'Ofis Kağızı A4 Double A', 'Faber-Castell Marker Dəsti', 'Masaüstü Orqanayzer Metal', 'Casio Ofis Divar Saatı', 'Fellowes Laminasiya Aparatı', 'Maqnit Lövhə Markeri 4lü', 'Yapışqan Lent 3M Şəffaf', 'Maped Erqonomik Qayçı', 'Deli Rəqəmsal Kalkulyator', 'Ofis Zibil Qabı Torlu'];
+                  v_e10 TEXT[] := ARRAY['LEGO City Polis Bölməsi', 'Barbie Moda Dəsti Kukla', 'Chicco Səyahət Arabası', 'Pampers Premium Care S4', 'Fisher-Price Öyrədici İt', 'Uşaq Velosipedi Btwin 16', 'Rəsm Dəsti Portativ 120P', 'Play-Doh Oyun Xəməri 4lü', 'Carter''s Pambıq Bodi', 'Yumşaq Ayı Oyuncaq 60sm', 'Hot Wheels 5li Avtomobil', 'Monopoly Masaüstü Oyun', 'Chicco Yemək Masası'];
+                  v_e11 TEXT[] := ARRAY['IKEA Ortopedik Döşək', 'Tefal Tava Dəsti Qranit', 'Philips Masaüstü Led Çıraq', 'Bosch Elektrikli Otbiçən', 'Gorenje Multivarka', 'Bambuk Hamam Aksesuarı', 'Duvardan Asma Metal Rəf', 'Mətbəx Bıçaq Dəsti 6lı', 'Pambıq Cüt Nəfərlik Yataq', 'Paslanmaz Metal Zibil Qabı', 'Dekorativ Salfet Qabı', 'Modern Divar Tablosu', 'Kolin Termoizolyasiya Bağı'];
+                  v_e12 TEXT[] := ARRAY['Royal Canin Pişik Yemi 2kq', 'Purina İt Yemi 3kq', 'Heyvan Şampunu Parlaqlıq', 'Plastik Daşıma Çantası Pro', 'Pişik Cırmaqlama Dirəyi', 'Avtomat Heyvan Sulayıcısı', 'Dəri İt Boğazlığı', 'Pişik Qumu Ətirli 5L', 'Tük Təmizləyən Rezin Daraq', 'Heyvan Oyuncaq Topu', 'Pet Vitamin Kompleksi', 'Yumşaq Pişik Yatağı', 'Metal Quş Qəfəsi'];
+                  v_e13 TEXT[] := ARRAY['Yamaha Akustik Gitara F310', 'Casio Rəqəmsal Sintezator', 'Roland Elektron Piano 88', 'Gibson Les Paul Elektro', 'Klassik Tədris Skripkası', 'Ukülele Soprano Wood', 'Focusrite Səs Kartı 2x2', 'Audio-Technica Qulaqlıq', 'Rode Kondensator Mikrafon', 'D''Addario Gitara Simləri', 'Musiqi Not Altlığı Metal', 'Rəqəmsal Metronom', 'Gitara Çantası Su-Keçirməz'];
+                  v_e14 TEXT[] := ARRAY['Zeytun Yağı Extra Virgin 1L', 'Təbii Nar Şirəsi 1L Saville', 'Lavazza Kofe Dənələri 1kq', 'Xalis Dağ Balı 500q', 'Belçika Südlü Şokoladı', 'Final Qarğıdalı Yağı 5L', 'Seylon Qara Çayı 500q Beta', 'Üzvi Badam Südü 1L Alpro', 'Yulaf Ezmesi 500q Myllyn', 'Qara Zirə Toxumu Yağı 250', 'Təbii Alma Sirkəsi 500ml', 'Qovrulmuş Keşu Kiloqramlıq', 'Premium Qurudulmuş Meyvə'];
+                  v_e15 TEXT[] := ARRAY['Swarovski Kristal Boyunbağı', 'Pandora Gümüş Qolbaq 925', 'Victorinox İsveç Bıçağı', 'Zippo Klassik Alışqan', 'Əl İşli Dəri Kişi Pulqabı', 'Ətirli Şam Dəsti 3lü Aura', 'Masaüstü Qlobus Bar Mini', 'Retro Suvenir Foto Çərçivə', 'Dəri Pasport Qabı Unikal', 'Xatirə Sikkəsi Qızılı', 'Dekorativ Sandıqça Taxta', 'Ağıllı Termo-Finjan Led', 'Bürünc Mini Heykəlcik'];
+
+                  -- Dinamik təyin dəyişənləri
+                  v_profile_id INT;
+                  v_payment_id INT;
+                  v_order_id INT;
+                  v_prod_id INT;
+                  v_cat_id INT;
+                  v_cat_idx INT;
+                  v_sub_idx INT;
+                  v_cat_ids INT[] := ARRAY[]::INT[];
+                  v_cust_ids INT[] := ARRAY[]::INT[];
+                  v_product_ids INT[] := ARRAY[]::INT[];
+
+                  v_channel VARCHAR(20);
+                  v_cust_id INT;
+                  v_gender VARCHAR(20);
+                  v_is_female BOOLEAN;
+                  v_selected_name TEXT;
+                  v_selected_surname TEXT;
+                  v_order_status VARCHAR(30);
+                  v_pay_status VARCHAR(30);
+                  v_pay_method VARCHAR(30);
+                  v_total_amount NUMERIC(12, 2);
+                  v_prod_price NUMERIC(12, 2);
+                  v_pin_chars TEXT := 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                  v_random_pin VARCHAR(10);
+                  v_prod_name TEXT;
+              BEGIN
+
+                  -- 1. CATEGORY INSERT (15 Şöbə)
+                  FOR i IN 1..15 LOOP
+                      INSERT INTO category (name, description, is_active)
+                      VALUES (v_categories[i], v_categories[i] || ' şöbəsinə aid geniş çeşidli və keyfiyyətli məhsullar', TRUE)
+                      RETURNING id INTO v_cat_id;
+                      v_cat_ids := array_append(v_cat_ids, v_cat_id);
+                  END LOOP;
+
+                  -- 2. PRODUCT INSERT (500 Məntiqi və Unikal Model)
+                  FOR i IN 1..500 LOOP
+                      v_cat_idx := (i % 15) + 1;
+                      v_cat_id := v_cat_ids[v_cat_idx];
+
+                      v_sub_idx := ((i / 15) % 13) + 1;
+
+                      IF v_cat_idx = 1 THEN v_prod_name := v_e1[v_sub_idx];
+                      ELSIF v_cat_idx = 2 THEN v_prod_name := v_e2[v_sub_idx];
+                      ELSIF v_cat_idx = 3 THEN v_prod_name := v_e3[v_sub_idx];
+                      ELSIF v_cat_idx = 4 THEN v_prod_name := v_e4[v_sub_idx];
+                      ELSIF v_cat_idx = 5 THEN v_prod_name := v_e5[v_sub_idx];
+                      ELSIF v_cat_idx = 6 THEN v_prod_name := v_e6[v_sub_idx];
+                      ELSIF v_cat_idx = 7 THEN v_prod_name := v_e7[v_sub_idx];
+                      ELSIF v_cat_idx = 8 THEN v_prod_name := v_e8[v_sub_idx];
+                      ELSIF v_cat_idx = 9 THEN v_prod_name := v_e9[v_sub_idx];
+                      ELSIF v_cat_idx = 10 THEN v_prod_name := v_e10[v_sub_idx];
+                      ELSIF v_cat_idx = 11 THEN v_prod_name := v_e11[v_sub_idx];
+                      ELSIF v_cat_idx = 12 THEN v_prod_name := v_e12[v_sub_idx];
+                      ELSIF v_cat_idx = 13 THEN v_prod_name := v_e13[v_sub_idx];
+                      ELSIF v_cat_idx = 14 THEN v_prod_name := v_e14[v_sub_idx];
+                      ELSE v_prod_name := v_e15[v_sub_idx];
+                      END IF;
+
+                      v_prod_name := v_prod_name || ' (V' || ((i / 15) + 1) || ')';
+                      IF length(v_prod_name) > 50 THEN
+                          v_prod_name := substring(v_prod_name from 1 for 50);
+                      END IF;
+
+                      INSERT INTO product (name, description, barcode, price, stock_quantity, status, created_at, updated_at, category_id)
+                      VALUES (
+                          v_prod_name,
+                          v_prod_name || ' modelinin rəsmi zəmanət talonu və spesifikasiya sənədləri.',
+                          '476' || LPAD((200000 + i)::text, 10, '0'),
+                          ((i * 6.25)::numeric % 750.00) + 3.50,
+                          ((i * 11) % 95) + 8,
+                          CASE WHEN i % 18 = 0 THEN 'OUT_OF_STOCK' WHEN i % 32 = 0 THEN 'ARCHIVED' ELSE 'ACTIVE' END,
+                          NOW() - (i * '45 minutes'::interval),
+                          NOW(),
+                          v_cat_id
+                      ) RETURNING id INTO v_prod_id;
+                      v_product_ids := array_append(v_product_ids, v_prod_id);
+                  END LOOP;
+
+                  -- 3. PROFILE və CUSTOMER INSERT
+                  FOR i IN 1..150 LOOP
+                      IF i % 35 = 0 THEN
+                          v_gender := 'PREFER_NOT_TO_SAY';
+                          v_is_female := (i % 2 = 0);
+                      ELSIF i % 2 = 0 THEN
+                          v_gender := 'MALE';
+                          v_is_female := FALSE;
+                      ELSE
+                          v_gender := 'FEMALE';
+                          v_is_female := TRUE;
+                      END IF;
+
+                      IF v_is_female THEN
+                          v_selected_name := v_female_names[(i % array_length(v_female_names, 1)) + 1];
+                      ELSE
+                          v_selected_name := v_male_names[(i % array_length(v_male_names, 1)) + 1];
+                      END IF;
+
+                      IF i % 5 = 0 THEN
+                          v_selected_surname := v_surnames_neutral[(i % array_length(v_surnames_neutral, 1)) + 1];
+                      ELSE
+                          v_selected_surname := v_surnames_ov_ev[(i % array_length(v_surnames_ov_ev, 1)) + 1];
+                          IF v_is_female THEN
+                              v_selected_surname := v_selected_surname || 'a';
+                          END IF;
+                      END IF;
+
+                      v_random_pin := SUBSTRING(v_pin_chars FROM ((i*2)%35 + 1) FOR 1) ||
+                                      SUBSTRING(v_pin_chars FROM ((i*5)%35 + 1) FOR 1) ||
+                                      SUBSTRING(v_pin_chars FROM ((i*3)%35 + 1) FOR 1) ||
+                                      LPAD(i::text, 4, '0');
+
+                      INSERT INTO profile (date_of_birth, gender, country, city, full_address, zip_code, pin, passport, created_at, updated_at)
+                      VALUES (
+                          '1975-03-10'::date + (i * 115 * '1 day'::interval),
+                          v_gender,
+                          'Azərbaycan',
+                          v_cities[(i % 12) + 1],
+                          'Məhəllə №' || (i + 10) || ', mənzil ' || (i * 2 + 1),
+                          'AZ' || (1000 + i),
+                          v_random_pin,
+                          'AZE' || (20000000 + i),
+                          NOW() - (i * '12 hours'::interval),
+                          NOW()
+                      ) RETURNING id INTO v_profile_id;
+
+                      INSERT INTO customer (name, surname, email, phone_number, status, created_at, profile_id)
+                      VALUES (
+                          v_selected_name,
+                          v_selected_surname,
+                          lower(v_selected_name) || '.' || i || '@salesms.az',
+                          '+994' || CASE WHEN i % 2 = 0 THEN '50' ELSE '55' END || (4000000 + i * 2311 % 499999),
+                          CASE WHEN i % 25 = 0 THEN 'BLOCKED' WHEN i % 40 = 0 THEN 'INACTIVE' ELSE 'ACTIVE' END,
+                          NOW() - (i * '12 hours'::interval),
+                          v_profile_id
+                      ) RETURNING id INTO v_cust_id;
+                      v_cust_ids := array_append(v_cust_ids, v_cust_id);
+                  END LOOP;
+
+                  -- 4. PAYMENT, ORDER, ORDER_PRODUCT və HISTORY INSERT
+                  FOR i IN 1..200 LOOP
+                      v_channel := CASE WHEN i % 4 = 0 THEN 'OFFLINE' ELSE 'ONLINE' END;
+                      v_cust_id := CASE WHEN v_channel = 'ONLINE' THEN v_cust_ids[(i % 150) + 1] ELSE CASE WHEN i % 5 = 0 THEN v_cust_ids[(i % 150) + 1] ELSE NULL END END;
+
+                      v_order_status := CASE
+                          WHEN i % 15 = 0 THEN 'CANCELLED'
+                          WHEN i % 15 = 1 THEN 'DELIVERING'
+                          WHEN i % 15 = 2 THEN 'PROCESSING'
+                          WHEN i % 15 = 3 THEN 'CREATED'
+                          WHEN i % 15 = 4 THEN 'PENDING_PAYMENT'
+                          WHEN i % 15 = 5 THEN 'COMPLETED'
+                          ELSE 'PAID' END;
+
+                      v_pay_status := CASE
+                          WHEN v_order_status = 'CANCELLED' THEN 'FAILED'
+                          WHEN v_order_status IN ('CREATED', 'PENDING_PAYMENT') THEN 'PENDING'
+                          ELSE 'SUCCESS' END;
+
+                      v_pay_method := CASE WHEN i % 3 = 0 THEN 'CASH' WHEN i % 3 = 1 THEN 'CREDIT_CARD' ELSE 'BANK_TRANSFER' END;
+
+                      INSERT INTO payment (amount, method, status, payment_date, transaction_id, branch_id, cash_register_id)
+                      VALUES (
+                          0.00,
+                          v_pay_method,
+                          v_pay_status,
+                          NOW() - (i * '90 minutes'::interval),
+                          CASE WHEN v_channel = 'ONLINE' THEN 'TXN-2026-' || (900000 + i) ELSE NULL END,
+                          CASE WHEN v_channel = 'OFFLINE' THEN 'BR-' || ((i % 6) + 101) ELSE NULL END,
+                          CASE WHEN v_channel = 'OFFLINE' THEN 'REG-' || ((i % 4) + 1) ELSE NULL END
+                      ) RETURNING id INTO v_payment_id;
+
+                      INSERT INTO "order" (channel, total_amount, current_status, created_at, updated_at, idempotency_key, customer_id, payment_id)
+                      VALUES (
+                          v_channel,
+                          0.00,
+                          v_order_status,
+                          NOW() - (i * '90 minutes'::interval),
+                          NOW() - (i * '5 minutes'::interval),
+                          'IDEMP-STR-2026-' || i || '-' || (5000 + i),
+                          v_cust_id,
+                          v_payment_id
+                      ) RETURNING id INTO v_order_id;
+
+                      v_total_amount := 0.00;
+                      FOR j IN 1..((i % 4) + 1) LOOP
+                          v_prod_id := v_product_ids[(((i * j) + 29) % 500) + 1];
+
+                          IF NOT EXISTS (SELECT 1 FROM "order_product" WHERE order_id = v_order_id AND product_id = v_prod_id) THEN
+                              INSERT INTO "order_product" (order_id, product_id) VALUES (v_order_id, v_prod_id);
+                              SELECT price INTO v_prod_price FROM product WHERE id = v_prod_id;
+                              v_total_amount := v_total_amount + v_prod_price;
+                          END IF;
+                      END LOOP;
+
+                      UPDATE "order" SET total_amount = v_total_amount WHERE id = v_order_id;
+                      UPDATE payment SET amount = v_total_amount WHERE id = v_payment_id;
+
+                      INSERT INTO history (status, notes, created_at, order_id)
+                      VALUES ('CREATED', 'Sifariş qəbul edildi, ilkin yoxlamadan keçdi.', NOW() - (i * '90 minutes'::interval), v_order_id);
+
+                      IF v_order_status IN ('PAID', 'PROCESSING', 'DELIVERING', 'COMPLETED') THEN
+                          INSERT INTO history (status, notes, created_at, order_id)
+                          VALUES ('PAID', 'Ödəniş uğurla tamamlandı. Tranzaksiya təsdiqləndi.', NOW() - (i * '75 minutes'::interval), v_order_id);
+                      END IF;
+
+                      IF v_order_status IN ('PROCESSING', 'DELIVERING', 'COMPLETED') THEN
+                          INSERT INTO history (status, notes, created_at, order_id)
+                          VALUES ('PROCESSING', 'Məhsul faturası kəsildi və toplama şöbəsinə göndərildi.', NOW() - (i * '50 minutes'::interval), v_order_id);
+                      END IF;
+
+                      IF v_order_status IN ('DELIVERING', 'COMPLETED') THEN
+                          INSERT INTO history (status, notes, created_at, order_id)
+                          VALUES ('DELIVERING', 'Bağlama kuryer şirkətinə təhvil verildi, yoldadır.', NOW() - (i * '30 minutes'::interval), v_order_id);
+                      END IF;
+
+                      IF v_order_status = 'COMPLETED' THEN
+                          INSERT INTO history (status, notes, created_at, order_id)
+                          VALUES ('COMPLETED', 'Məhsul müştəri tərəfindən rəsmən təslim alındı.', NOW() - (i * '2 minutes'::interval), v_order_id);
+                      ELSIF v_order_status = 'CANCELLED' THEN
+                          INSERT INTO history (status, notes, created_at, order_id)
+                          VALUES ('CANCELLED', 'Sifariş ləğv edildi, maliyyə geri qaytarılması başladıldı.', NOW() - (i * '2 minutes'::interval), v_order_id);
+                      END IF;
+
+                  END LOOP;
+
+              END $$;

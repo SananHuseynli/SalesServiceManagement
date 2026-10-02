@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - includeAll:
+      path: db/changelog/table-create
+  - includeAll:
+      path: db/changelog/table-relations
+  - includeAll:
+      path: db/changelog/table-alter
+  - includeAll:
+      path: db/changelog/insert-data
+

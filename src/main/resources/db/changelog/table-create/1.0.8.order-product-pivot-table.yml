@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-pivot-tables-order_product
+      author: ShLF
+      changes:
+        - createTable:
+            tableName: order_product
+            columns:
+              - column:
+                  name: order_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false

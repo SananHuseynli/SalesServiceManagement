@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: order-payment-relation
+      author: ShLF
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: order
+            baseColumnNames: payment_id
+            constraintName: fk_orders_payment
+            referencedTableName: payment
+            referencedColumnNames: id

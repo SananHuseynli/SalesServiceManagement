@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: alter-order-table-add-column-idempotency-key
+      author: ShLF
+      changes:
+        - addColumn:
+            tableName: order
+            columns:
+              - column:
+                  name: idempotency_key
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: true

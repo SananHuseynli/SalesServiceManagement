@@ -1,0 +1,28 @@
+### Sadələşdirilmiş Layihə Adı
+
+**Sales API** (və ya **Shop API**)
+
+### Entity Adlandırmalarının Sadələşdirilməsi
+
+Mərkəzi entity `Order` olaraq saxlanılır. Digər entity adları daha qısa formata salınmışdır:
+
+* **`Order`**: Mərkəzi cədvəl (Sifariş).
+* **`Customer`**: Sifarişi verən şəxs.
+* **`Profile`**: Müştərinin əlavə məlumatları (`CustomerProfile` əvəzinə).
+* **`Product`**: Satılan məhsul.
+* **`Category`**: Məhsulun aid olduğu qrup.
+* **`Payment`**: Ödəniş detalları və qəbz (`Invoice` əvəzinə).
+* **`History`**: Sifariş statusunun dəyişmə ardıcıllığı (`OrderStatusHistory` əvəzinə).
+* **`Channel`**: Satış növünü təyin edən Enum (`SalesChannel` əvəzinə, dəyərləri: `ONLINE`, `OFFLINE`).
+
+### Mərkəzi Entity (`Order`) Üzərində 4 Əlaqə Növü
+
+* **`@ManyToOne`**: `Order` -> `Customer` (Bir müştərinin çoxlu sifarişi var, bu sifariş bir müştəriyə aiddir). +
+* **`@OneToMany`**: `Order` -> `History` (Bir sifarişin zamanla dəyişən çoxlu status qeydi var). +
+* **`@ManyToMany`**: `Order` <-> `Product` (Bir sifarişdə çoxlu məhsul var, bir məhsul çoxlu sifarişdə iştirak edir). +
+* **`@OneToOne`**: `Order` <-> `Payment` (Bir sifarişin yalnız bir ödəniş/qəbz qeydi var). +
+
+### Digər Əlaqələr
+
+* **`@OneToOne`**: `Customer` <-> `Profile` +
+* **`@ManyToOne`**: `Product` -> `Category` +
